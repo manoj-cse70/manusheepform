@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MnauSheepFarm - B M Manoja</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--gd:#2d4a2d;--gm:#4a7c4a;--gl:#a8c89a;--cr:#f5f0e8;--br:#8b6340;--go:#c9a84c;--wh:#ffffff;--rd:#c0392b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Lato',sans-serif;background:var(--cr);color:var(--gd);overflow-x:hidden;}
+
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(45,74,45,0.97);backdrop-filter:blur(8px);display:flex;justify-content:space-between;align-items:center;padding:0.8rem 2rem;flex-wrap:wrap;gap:0.5rem;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--cr);display:flex;align-items:center;gap:0.4rem;}
+.nav-right{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;}
+.nav-links{display:flex;gap:1.2rem;list-style:none;}
+.nav-links a{color:var(--gl);text-decoration:none;font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover{color:var(--go);}
+.lang-sel{background:rgba(255,255,255,.15);color:var(--cr);border:1px solid var(--gl);border-radius:20px;padding:.3rem .8rem;font-size:.75rem;cursor:pointer;outline:none;}
+.lang-sel option{background:var(--gd);color:var(--cr);}
+.btn-nav{border:none;border-radius:20px;padding:.4rem 1rem;font-size:.75rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.btn-nav:hover{opacity:.85;}
+.btn-nav.gold{background:var(--go);color:var(--gd);}
+.btn-nav.red{background:var(--rd);color:#fff;}
+.btn-nav.green{background:var(--gm);color:#fff;}
+.user-greet{color:var(--go);font-size:.8rem;font-weight:700;}
+
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;overflow:hidden;}
+.hero-slides{position:absolute;inset:0;z-index:0;}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease;}
+.hero-slide.active{opacity:1;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(45,74,45,.72) 0%,rgba(45,74,45,.4) 55%,rgba(245,240,232,1) 100%);z-index:1;}
+.hero>*:not(.hero-slides):not(.hero-overlay){position:relative;z-index:2;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* PHOTO GALLERY */
+.gallery{background:var(--gd);padding:3rem 2rem;}
+.gallery-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.gallery-img{width:100%;height:200px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform .3s,filter .3s;filter:brightness(.9);}
+.gallery-img:hover{transform:scale(1.04);filter:brightness(1.05);}
+.gallery-title{text-align:center;font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--cr);margin-bottom:1.5rem;}
+.gallery-label{text-align:center;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--go);font-weight:700;margin-bottom:.5rem;}
+@media(max-width:768px){.gallery-grid{grid-template-columns:repeat(2,1fr);}.gallery-img{height:130px;}}
+.hero-badge{background:var(--go);color:var(--gd);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;padding:.4rem 1.2rem;border-radius:20px;margin-bottom:1.5rem;font-weight:700;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,7vw,5rem);color:#fff;line-height:1.1;text-shadow:0 4px 20px rgba(0,0,0,.4);}
+.hero h1 em{color:var(--go);font-style:italic;}
+.hero p{font-size:1.05rem;color:var(--cr);margin:1.5rem 0 2.5rem;font-weight:300;max-width:500px;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.btn{padding:.85rem 2rem;border-radius:4px;font-size:.88rem;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:1px;transition:all .3s;cursor:pointer;border:2px solid transparent;display:inline-block;}
+.btn-primary{background:var(--go);color:var(--gd);}
+.btn-primary:hover{background:transparent;border-color:var(--go);color:var(--go);}
+.btn-outline{border:2px solid var(--cr);color:var(--cr);background:transparent;}
+.btn-outline:hover{background:var(--cr);color:var(--gd);}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--gd);}
+.stat{text-align:center;padding:2rem 1rem;border-right:1px solid rgba(168,200,154,.2);}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--go);font-weight:700;}
+.stat-label{color:var(--gl);font-size:.8rem;letter-spacing:1px;text-transform:uppercase;margin-top:.3rem;}
+
+section{padding:5rem 2rem;}
+.sec-label{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--go);font-weight:700;margin-bottom:.8rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--gd);line-height:1.2;margin-bottom:1rem;}
+.sec-desc{color:#6b7c6b;font-size:1rem;max-width:600px;line-height:1.8;}
+
+.about{background:var(--cr);}
+.about-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.about-img{width:100%;height:380px;background:var(--gm);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:6rem;}
+.features{margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.feat{display:flex;align-items:flex-start;gap:.7rem;}
+.feat-icon{font-size:1.3rem;flex-shrink:0;}
+.feat-text strong{display:block;font-size:.85rem;color:var(--gd);}
+.feat-text span{font-size:.78rem;color:#7a8a7a;}
+
+.shop{background:#eef5ec;}
+.shop-hdr{text-align:center;max-width:600px;margin:0 auto 1.5rem;}
+.admin-bar{max-width:1100px;margin:0 auto 2rem;background:var(--gd);border-radius:8px;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.admin-bar span{color:var(--gl);font-size:.82rem;}
+.btn-admin{background:var(--go);color:var(--gd);border:none;border-radius:4px;padding:.5rem 1rem;font-size:.78rem;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;}
+.sheep-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem;}
+.sheep-card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(45,74,45,.08);transition:transform .3s,box-shadow .3s;position:relative;}
+.sheep-card:hover{transform:translateY(-5px);box-shadow:0 12px 40px rgba(45,74,45,.14);}
+.simg{height:210px;background:#d0e8c8;position:relative;overflow:hidden;cursor:pointer;}
+.simg img{width:100%;height:100%;object-fit:cover;display:block;}
+.simg-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;}
+.simg-ph span{font-size:3.5rem;}
+.simg-ph p{font-size:.72rem;color:var(--gm);font-weight:700;letter-spacing:1px;}
+.upl-ov{position:absolute;inset:0;background:rgba(45,74,45,.75);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;color:#fff;font-size:.8rem;gap:.3rem;}
+.simg:hover .upl-ov{opacity:1;}
+.upl-ov span{font-size:2rem;}
+.stag{position:absolute;top:.8rem;left:.8rem;color:#fff;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;padding:.3rem .7rem;border-radius:20px;font-weight:700;z-index:2;}
+.stag.available{background:#3a8c3a;}
+.stag.sold{background:#8c3a3a;}
+.hid{display:none;}
+.sinfo{padding:1.3rem;}
+.sname{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--gd);border:none;background:transparent;width:100%;outline:none;font-weight:700;}
+.sname:focus{border-bottom:2px dashed var(--go);}
+.sdesc{font-size:.8rem;color:#7a8a7a;border:none;background:transparent;width:100%;outline:none;resize:none;line-height:1.5;min-height:42px;font-family:'Lato',sans-serif;margin-top:.4rem;}
+.sdesc:focus{border-bottom:2px dashed var(--go);}
+.sprice-row{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid #e8ede8;}
+.price-wrap{display:flex;align-items:center;gap:.3rem;}
+.psym{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--br);font-weight:700;}
+.pinput{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--br);font-weight:700;border:none;background:transparent;width:90px;outline:none;}
+.pinput:focus{border-bottom:2px dashed var(--go);}
+.cbtns{display:flex;gap:.4rem;flex-wrap:wrap;}
+.btn-c{background:var(--gd);color:#fff;padding:.45rem .75rem;border-radius:4px;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;transition:background .3s;}
+.btn-c:hover{background:var(--gm);}
+.btn-c.buy{background:var(--go);color:var(--gd);}
+.btn-c.buy:hover{background:#b8973a;}
+.add-card{background:#fff;border-radius:10px;border:2px dashed var(--gl);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;cursor:pointer;gap:.8rem;transition:all .3s;}
+.add-card:hover{border-color:var(--gm);background:#f0f8f0;}
+.add-card span{font-size:3rem;color:var(--gl);}
+.add-card p{color:var(--gm);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;}
+
+.breeds{background:var(--gd);}
+.breeds-grid{max-width:1100px;margin:3rem auto 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1.5rem;}
+.breed-card{background:rgba(255,255,255,.07);border:1px solid rgba(168,200,154,.2);border-radius:8px;padding:1.5rem 1rem;text-align:center;transition:all .3s;}
+.breed-card:hover{background:rgba(255,255,255,.12);border-color:var(--go);}
+.breed-icon{font-size:2.2rem;margin-bottom:.6rem;}
+.breed-card h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--go);margin-bottom:.3rem;}
+.breed-card p{font-size:.78rem;color:var(--gl);line-height:1.5;}
+
+.contact{background:var(--cr);}
+.contact-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start;}
+.ci{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
+.ci-icon{width:42px;height:42px;background:var(--gd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.ci-text strong{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:#7a8a7a;}
+.ci-text span{color:var(--gd);font-weight:600;font-size:.9rem;}
+.fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;}
+.fg label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gd);}
+.fg input,.fg select,.fg textarea{padding:.8rem 1rem;border:1.5px solid #d0dbc8;border-radius:4px;font-family:'Lato',sans-serif;font-size:.92rem;color:var(--gd);background:#fff;transition:border-color .3s;outline:none;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gm);}
+.fg textarea{resize:vertical;min-height:100px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.btn-sub{background:var(--gd);color:#fff;padding:.9rem 2rem;border:none;border-radius:4px;font-family:'Lato',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .3s;}
+.btn-sub:hover{background:var(--gm);}
+
+footer{background:var(--gd);color:var(--gl);text-align:center;padding:2rem;}
+footer .flogo{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--cr);margin-bottom:.4rem;}
+footer p{font-size:.8rem;opacity:.7;margin-top:.3rem;}
+
+/* MODALS */
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;padding:1rem;}
+.moverlay.active{display:flex;}
+.modal{background:#fff;border-radius:12px;padding:2.2rem;max-width:440px;width:100%;position:relative;max-height:90vh;overflow-y:auto;}
+.modal h3{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gd);margin-bottom:.5rem;}
+.modal p{color:#6b7c6b;margin-bottom:1rem;font-size:.9rem;}
+.mclose{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#aaa;}
+.mtabs{display:flex;margin-bottom:1.5rem;border-radius:6px;overflow:hidden;border:1.5px solid #d0dbc8;}
+.mtab{flex:1;padding:.6rem;text-align:center;cursor:pointer;font-size:.8rem;font-weight:700;text-transform:uppercase;background:#fff;color:#aaa;transition:all .3s;}
+.mtab.active{background:var(--gd);color:#fff;}
+.mform{display:flex;flex-direction:column;gap:.8rem;}
+.minput{padding:.8rem 1rem;border:1.5px solid #d0dbc8;border-radius:4px;font-family:'Lato',sans-serif;font-size:.92rem;outline:none;transition:border-color .3s;}
+.minput:focus{border-color:var(--gm);}
+.btn-msub{background:var(--gd);color:#fff;padding:.9rem;border:none;border-radius:4px;font-family:'Lato',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .3s;}
+.btn-msub:hover{background:var(--gm);}
+.mswitch{text-align:center;font-size:.82rem;color:#7a8a7a;margin-top:.5rem;}
+.mswitch a{color:var(--gm);cursor:pointer;font-weight:700;}
+
+/* PAYMENT */
+.pay-box{background:#f8f8f8;border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1rem;}
+.pay-box h4{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gd);margin-bottom:.3rem;}
+.upi-id{font-size:1.05rem;font-weight:700;color:var(--gm);background:#fff;padding:.5rem 1rem;border-radius:4px;border:1.5px dashed var(--gm);display:inline-block;margin:.5rem 0;}
+.pay-apps{display:flex;justify-content:center;gap:1rem;margin:1rem 0;flex-wrap:wrap;}
+.pay-app{display:flex;flex-direction:column;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;color:var(--gd);cursor:pointer;transition:transform .2s;}
+.pay-app:hover{transform:scale(1.1);}
+.pay-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;}
+.gpay{background:#fff;border:2px solid #e0e0e0;color:#333;}
+.phonepe{background:#5f259f;color:#fff;}
+.paytm{background:#00baf2;color:#fff;}
+.upi-any{background:#f8f8f8;border:2px solid #e0e0e0;}
+.qr-box{background:#fff;border:2px solid #e0e0e0;border-radius:8px;width:120px;height:120px;margin:.8rem auto;display:flex;align-items:center;justify-content:center;font-size:.68rem;color:#aaa;text-align:center;padding:.5rem;}
+.pay-note{font-size:.78rem;color:#7a8a7a;line-height:1.6;}
+
+/* ACCOUNT */
+.acc-panel{background:#fff;border-radius:8px;padding:1.2rem;margin-bottom:1rem;border:1.5px solid #e0e8e0;}
+.acc-panel h4{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gd);margin-bottom:.8rem;}
+.ord-item{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid #f0f0f0;font-size:.84rem;}
+.ord-item:last-child{border-bottom:none;}
+
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--gd);color:var(--cr);padding:.7rem 2rem;border-radius:30px;font-size:.84rem;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+
+@media(max-width:768px){
+  nav{padding:.8rem 1rem;}
+  .nav-links{display:none;}
+  .stats{grid-template-columns:1fr;}
+  .stat{border-right:none;border-bottom:1px solid rgba(168,200,154,.2);}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🐑 ManuSheepFarm</div>
+  <ul class="nav-links">
+    <li><a href="#about" data-key="nav_about">About</a></li>
+    <li><a href="#shop" data-key="nav_shop">Shop</a></li>
+    <li><a href="#breeds" data-key="nav_breeds">Breeds</a></li>
+    <li><a href="#contact" data-key="nav_contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <select class="lang-sel" onchange="setLang(this.value)">
+      <option value="en">🇬🇧 English</option>
+      <option value="kn">🇮🇳 ಕನ್ನಡ</option>
+      <option value="hi">🇮🇳 हिंदी</option>
+      <option value="ta">🇮🇳 தமிழ்</option>
+      <option value="ml">🇮🇳 മലയാളം</option>
+      <option value="mr">🇮🇳 मराठी</option>
+      
+   </select>
+    <div id="authArea"></div>
+  </div>
+</nav>
+
+<section class="hero">
+  <!-- Slideshow Background -->
+  <div class="hero-slides" id="heroSlides">
+    <div class="hero-slide active" style="background:linear-gradient(135deg,#1a3a1a 0%,#2d4a2d 50%,#3d6b3d 100%);"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-badge" data-key="hero_badge">🌿 Karnataka · Pasture-Raised · Ethically Farmed</div>
+  <h1><span data-key="hero_h1a">Welcome to</span><br><em>ManuSheepFarm</em></h1>
+  <p data-key="hero_desc">Quality sheep raised with care by B M Manoja in Kadakolla, Karnataka.</p>
+  <div class="hero-btns">
+    <a href="#shop" class="btn btn-primary" data-key="hero_btn1">Browse Sheep for Sale</a>
+    <a href="#contact" class="btn btn-outline" data-key="hero_btn2">Contact Us</a>
+  </div>
+  <!-- Admin: Upload hero background photos -->
+  <div id="heroUploadBtn" style="display:none;margin-top:1.5rem;">
+    <label style="background:rgba(255,255,255,.2);color:#fff;border:2px dashed #fff;padding:.6rem 1.4rem;border-radius:30px;font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:1px;">
+      📷 Upload Background Photos (Hero)
+      <input type="file" accept="image/*" multiple style="display:none" onchange="uploadHeroPhotos(event)">
+    </label>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">100+</div><div class="stat-label" data-key="stat1">Sheep on Farm</div></div>
+  <div class="stat"><div class="stat-num">10+</div><div class="stat-label" data-key="stat2">Years Experience</div></div>
+  <div class="stat"><div class="stat-num">6+</div><div class="stat-label" data-key="stat3">Breeds Available</div></div>
+</div>
+
+<!-- SHEEP PHOTO GALLERY -->
+<div class="gallery" id="gallery">
+  <div class="gallery-label">📸 Farm Photos</div>
+  <div class="gallery-title">Our Sheep 🐑🐏 & Goats 🐐</div>
+  <div class="gallery-grid" id="galleryGrid">
+    <!-- Filled by JS -->
+  </div>
+  <div id="galleryAdminBtn" style="display:none;text-align:center;margin-top:1.5rem;">
+    <label style="background:var(--go);color:var(--gd);padding:.7rem 1.8rem;border-radius:4px;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;cursor:pointer;">
+      📷 Add Photo to Gallery
+      <input type="file" accept="image/*" multiple style="display:none" onchange="addGalleryPhotos(event)">
+    </label>
+  </div>
+</div>
+
+<section class="about" id="about">
+  <div class="about-grid">
+    <div>
+      <div class="about-img" id="aboutImgWrap" style="background:#c8dfc8;border-radius:8px;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;cursor:pointer;position:relative;overflow:hidden;" onclick="document.getElementById('aboutFileInput').click()">
+        <span style="font-size:5rem;">🐑</span>
+        <p style="font-size:.85rem;color:var(--gd);font-weight:700;letter-spacing:1px;">Click to Upload Farm Photo</p>
+        <input type="file" id="aboutFileInput" accept="image/*" style="display:none" onchange="uploadAboutImg(event)">
+      </div>
+    </div>
+    <div>
+      <div class="sec-label" data-key="ab_label">Our Story</div>
+      <h2 class="sec-title" data-key="ab_title">B M Manoja's Family Sheep Farm</h2>
+      <p class="sec-desc" data-key="ab_desc">Located in Kadakolla village, Kudligi, Karnataka. We raise healthy sheep using ethical and sustainable practices on natural pastures.</p>
+      <div class="features">
+        <div class="feat"><div class="feat-icon">🌱</div><div class="feat-text"><strong data-key="f1">Natural Feed</strong><span data-key="f1s">No hormones or chemicals</span></div></div>
+        <div class="feat"><div class="feat-icon">🏅</div><div class="feat-text"><strong data-key="f2">Health Certified</strong><span data-key="f2s">Vaccinated & vet-checked</span></div></div>
+        <div class="feat"><div class="feat-icon">🚚</div><div class="feat-text"><strong data-key="f3">Safe Delivery</strong><span data-key="f3s">Transport arranged</span></div></div>
+        <div class="feat"><div class="feat-icon">💬</div><div class="feat-text"><strong data-key="f4">Expert Advice</strong><span data-key="f4s">We support new buyers</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="shop">
+  <div class="shop-hdr">
+    <div class="sec-label" data-key="sh_label">Livestock for Sale</div>
+    <h2 class="sec-title" data-key="sh_title">Our Sheep Listings</h2>
+    <p class="sec-desc" data-key="sh_desc">Browse our quality sheep. Login to enquire or buy.</p>
+  </div>
+  <div class="admin-bar" id="adminBar" style="display:none;">
+    <span>✏️ Admin Mode — Click fields to edit · Click image to upload photo</span>
+    <button class="btn-admin" onclick="addNewCard()">+ Add Sheep</button>
+  </div>
+  <div class="sheep-grid" id="sheepGrid"></div>
+</section>
+
+<section class="breeds" id="breeds">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="sec-label" style="color:var(--go);" data-key="br_label">Our Specialty</div>
+    <h2 class="sec-title" style="color:var(--cr);" data-key="br_title">Breeds We Raise</h2>
+    <p class="sec-desc" style="color:var(--gl);" data-key="br_desc">Breeds for wool, meat, dairy farming across Karnataka.</p>
+    <div class="breeds-grid">
+      <div class="breed-card"><div class="breed-icon">🐑</div><h3>Merino</h3><p data-key="b1">World's finest wool.</p></div>
+      <div class="breed-card"><div class="breed-icon">🐏</div><h3>Dorper</h3><p data-key="b2">Fast-growing meat breed.</p></div>
+      <div class="breed-card"><div class="breed-icon">🐑</div><h3>Deccani</h3><p data-key="b3">Native Karnataka breed.</p></div>
+      <div class="breed-card"><div class="breed-icon">🐏</div><h3>Bannur</h3><p data-key="b4">Famous Karnataka meat.</p></div>
+      <div class="breed-card"><div class="breed-icon">🐑</div><h3>Suffolk</h3><p data-key="b5">Excellent growth rates.</p></div>
+      <div class="breed-card"><div class="breed-icon">🐏</div><h3>Corriedale</h3><p data-key="b6">Dual-purpose breed.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="sec-label" data-key="co_label">Get In Touch</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:2.2rem;margin-bottom:1rem;" data-key="co_title">Contact B M Manoja</h2>
+      <p style="color:#6b7c6b;line-height:1.8;margin-bottom:1.5rem;" data-key="co_desc">Have a question or ready to buy? We'd love to hear from you.</p>
+      <div class="ci"><div class="ci-icon">📍</div><div class="ci-text"><strong data-key="c1">Address</strong><span>Kadakolla Village, Kudligi, Karnataka – 583126</span></div></div>
+      <div class="ci"><div class="ci-icon">📞</div><div class="ci-text"><strong data-key="c2">Phone / WhatsApp</strong><span>+91 7019565474</span></div></div>
+      <div class="ci"><div class="ci-icon">📧</div><div class="ci-text"><strong data-key="c3">Email</strong><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a5c8c4cbd09295949cc7c8e5c2c8c4ccc98bc6cac8">[email&#160;protected]</a></span></div></div>
+      <div class="ci"><div class="ci-icon">🕐</div><div class="ci-text"><strong data-key="c4">Farm Visits</strong><span>Mon–Sat, 8am–6pm</span></div></div>
+    </div>
+    <div>
+      <div class="form-row">
+        <div class="fg"><label data-key="fm1">Your Name</label><input type="text" placeholder="Your name"></div>
+        <div class="fg"><label data-key="fm2">Phone</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
+      </div>
+      <div class="fg"><label data-key="fm3">Email</label><input type="email" placeholder="your@email.com"></div>
+      <div class="fg">
+        <label data-key="fm4">Interested In</label>
+        <select>
+          <option data-key="op1">Breeding Stock</option>
+          <option data-key="op2">Meat Sheep</option>
+          <option data-key="op3">Dairy Sheep</option>
+          <option data-key="op4">Wool Sheep</option>
+          <option data-key="op5">Lambs</option>
+          <option data-key="op6">General Enquiry</option>
+        </select>
+      </div>
+      <div class="fg"><label data-key="fm5">Message</label><textarea placeholder="Tell us what you need..."></textarea></div>
+      <button class="btn-sub" onclick="toast('✅ Message sent! We will contact you soon.')">Send Enquiry 🐑</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo">🐑 MnauSheepFarm</div>
+  <p>B M Manoja · Kadakolla, Kudligi, Karnataka 583126</p>
+  <p>+91 7019565474 · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c3aea2adb6f4f3f2faa1ae83a4aea2aaafeda0acae">[email&#160;protected]</a></p>
+  <p style="margin-top:.4rem;">© 2026 MnauSheepFarm. All rights reserved.</p>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="moverlay" id="authModal">
+  <div class="modal">
+    <button class="mclose" onclick="closeM('authModal')">✕</button>
+    <div style="text-align:center;font-size:2.5rem;margin-bottom:.5rem;">🐑</div>
+    <div class="mtabs">
+      <div class="mtab active" id="tab-login" onclick="switchTab('login')">Login</div>
+      <div class="mtab" id="tab-reg" onclick="switchTab('reg')">Register</div>
+    </div>
+    <div id="loginForm">
+      <div class="mform">
+        <input class="minput" type="email" id="lEmail" placeholder="Email address">
+        <input class="minput" type="password" id="lPass" placeholder="Password">
+        <button class="btn-msub" onclick="doLogin()">Login</button>
+        <div class="mswitch">No account? <a onclick="switchTab('reg')">Register here</a></div>
+        <div class="mswitch" style="margin-top:.3rem;"><a onclick="doAdminLogin()">🔐 Admin Login (Owner)</a></div>
+      </div>
+    </div>
+    <div id="regForm" style="display:none;">
+      <div class="mform">
+        <input class="minput" type="text" id="rName" placeholder="Full Name">
+        <input class="minput" type="email" id="rEmail" placeholder="Email address">
+        <input class="minput" type="tel" id="rPhone" placeholder="Phone number">
+        <input class="minput" type="password" id="rPass" placeholder="Create password">
+        <input class="minput" type="password" id="rPass2" placeholder="Confirm password">
+        <button class="btn-msub" onclick="doRegister()">Create Account</button>
+        <div class="mswitch">Have account? <a onclick="switchTab('login')">Login here</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="moverlay" id="payModal">
+  <div class="modal">
+    <button class="mclose" onclick="closeM('payModal')">✕</button>
+    <h3 style="text-align:center;">💳 Payment</h3>
+    <p style="text-align:center;" id="payName">Item</p>
+    <p style="text-align:center;font-size:1.4rem;font-weight:700;color:var(--br);" id="payAmt">₹0</p>
+    <div class="pay-box">
+      <h4>Pay via UPI</h4>
+      <div class="upi-id">monutech223@axl</div>
+      <div class="pay-apps">
+        <div class="pay-app" onclick="toast('Opening GPay...')"><div class="pay-icon gpay">G</div><span>GPay</span></div>
+        <div class="pay-app" onclick="toast('Opening PhonePe...')"><div class="pay-icon phonepe">Pe</div><span>PhonePe</span></div>
+        <div class="pay-app" onclick="toast('Opening Paytm...')"><div class="pay-icon paytm">P</div><span>Paytm</span></div>
+        <div class="pay-app" onclick="toast('UPI ID: 7019565474@upi')"><div class="pay-icon upi-any">📲</div><span>Any UPI</span></div>
+      </div>
+      <div class="qr-box">📱 Scan QR<br>
+        <small>Open UPI app to scan</small></div>
+      <p class="pay-note">
+        1. Open GPay / PhonePe / Paytm<br>
+        2. Pay to: <strong>monutech223@axl</strong><br>
+        3. Take screenshot of payment<br>
+        4. Send to WhatsApp: <strong>+91 7019565474</strong>
+      </p>
+    </div>
+    <button class="btn-sub" style="width:100%;" onclick="confirmPay()">✅ I Have Paid — Confirm</button>
+  </div>
+</div>
+
+<!-- ACCOUNT MODAL -->
+<div class="moverlay" id="accModal">
+  <div class="modal">
+    <button class="mclose" onclick="closeM('accModal')">✕</button>
+    <h3>👤 My Account</h3>
+    <div class="acc-panel"><h4>Profile</h4><p style="font-size:.88rem;color:#555;" id="profInfo"></p></div>
+    <div class="acc-panel"><h4>My Enquiries & Orders</h4><div id="myOrders"></div></div>
+    <button class="btn-sub" style="width:100%;margin-top:.5rem;background:var(--rd);" onclick="doLogout()">Logout</button>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// TRANSLATIONS
+const T={
+  en:{nav_about:"About",nav_shop:"Shop",nav_breeds:"Breeds",nav_contact:"Contact",btn_login:"Login",btn_acc:"My Account",hero_badge:"🌿 Karnataka · Pasture-Raised · Ethically Farmed",hero_h1a:"Welcome to",hero_desc:"Quality sheep raised with care by B M Manoja in Kadakolla, Karnataka.",hero_btn1:"Browse Sheep for Sale",hero_btn2:"Contact Us",stat1:"Sheep on Farm",stat2:"Years Experience",stat3:"Breeds Available",ab_label:"Our Story",ab_title:"B M Manoja's Family Sheep Farm",ab_desc:"Located in Kadakolla village, Kudligi, Karnataka. We raise healthy sheep using ethical and sustainable practices.",f1:"Natural Feed",f1s:"No hormones or chemicals",f2:"Health Certified",f2s:"Vaccinated & vet-checked",f3:"Safe Delivery",f3s:"Transport arranged",f4:"Expert Advice",f4s:"We support new buyers",sh_label:"Livestock for Sale",sh_title:"Our Sheep Listings",sh_desc:"Browse our quality sheep. Login to enquire or buy.",br_label:"Our Specialty",br_title:"Breeds We Raise",br_desc:"Breeds for wool, meat, dairy farming across Karnataka.",b1:"World's finest wool.",b2:"Fast-growing meat breed.",b3:"Native Karnataka breed.",b4:"Famous Karnataka meat.",b5:"Excellent growth rates.",b6:"Dual-purpose breed.",co_label:"Get In Touch",co_title:"Contact B M Manoja",co_desc:"Have a question or ready to buy?",c1:"Address",c2:"Phone / WhatsApp",c3:"Email",c4:"Farm Visits",fm1:"Your Name",fm2:"Phone",fm3:"Email",fm4:"Interested In",fm5:"Message",op1:"Breeding Stock",op2:"Meat Sheep",op3:"Dairy Sheep",op4:"Wool Sheep",op5:"Lambs",op6:"General Enquiry",enq:"Enquire",buy:"Buy Now",sold_lbl:"Mark Sold",avail_lbl:"Mark Available",rem:"Remove"},
+  kn:{nav_about:"ನಮ್ಮ ಬಗ್ಗೆ",nav_shop:"ಅಂಗಡಿ",nav_breeds:"ತಳಿಗಳು",nav_contact:"ಸಂಪರ್ಕ",btn_login:"ಲಾಗಿನ್",btn_acc:"ನನ್ನ ಖಾತೆ",hero_badge:"🌿 ಕರ್ನಾಟಕ · ನೈಸರ್ಗಿಕ ಹುಲ್ಲುಗಾವಲು",hero_h1a:"ಸ್ವಾಗತ",hero_desc:"ಕಡಕೊಳ್ಳ, ಕರ್ನಾಟಕದ ಬಿ ಎಂ ಮನೋಜ ಅವರಿಂದ ಗುಣಮಟ್ಟದ ಕುರಿಗಳು.",hero_btn1:"ಕುರಿ ಖರೀದಿಸಿ",hero_btn2:"ಸಂಪರ್ಕಿಸಿ",stat1:"ಫಾರ್ಮ್‌ನಲ್ಲಿ ಕುರಿಗಳು",stat2:"ವರ್ಷಗಳ ಅನುಭವ",stat3:"ತಳಿಗಳು ಲಭ್ಯ",ab_label:"ನಮ್ಮ ಕಥೆ",ab_title:"ಬಿ ಎಂ ಮನೋಜ ಕುಟುಂಬ ಕುರಿ ಫಾರ್ಮ್",ab_desc:"ಕಡಕೊಳ್ಳ ಗ್ರಾಮ, ಕುಡ್ಲಿಗಿ, ಕರ್ನಾಟಕ.",f1:"ನೈಸರ್ಗಿಕ ಆಹಾರ",f1s:"ಹಾರ್ಮೋನ್ ಇಲ್ಲ",f2:"ಆರೋಗ್ಯ ಪ್ರಮಾಣ",f2s:"ಲಸಿಕೆ ನೀಡಲಾಗಿದೆ",f3:"ಸುರಕ್ಷಿತ ವಿತರಣೆ",f3s:"ಸಾರಿಗೆ ವ್ಯವಸ್ಥೆ",f4:"ತಜ್ಞ ಸಲಹೆ",f4s:"ಹೊಸ ಖರೀದಿದಾರರಿಗೆ ಸಹಾಯ",sh_label:"ಮಾರಾಟಕ್ಕೆ ಕುರಿ",sh_title:"ನಮ್ಮ ಕುರಿ ಪಟ್ಟಿ",sh_desc:"ಲಾಗಿನ್ ಮಾಡಿ ವಿಚಾರಿಸಿ ಅಥವಾ ಖರೀದಿಸಿ.",br_label:"ನಮ್ಮ ವಿಶೇಷತೆ",br_title:"ನಾವು ಸಾಕುವ ತಳಿಗಳು",br_desc:"ಉಣ್ಣೆ, ಮಾಂಸ, ಡೇರಿಗೆ ಸೂಕ್ತ ತಳಿಗಳು.",b1:"ವಿಶ್ವದ ಅತ್ಯುತ್ತಮ ಉಣ್ಣೆ.",b2:"ವೇಗವಾಗಿ ಬೆಳೆಯುವ ತಳಿ.",b3:"ಸ್ಥಳೀಯ ಕರ್ನಾಟಕ ತಳಿ.",b4:"ಪ್ರಸಿದ್ಧ ಮಾಂಸ ತಳಿ.",b5:"ಉತ್ತಮ ಬೆಳವಣಿಗೆ.",b6:"ಉಣ್ಣೆ ಮತ್ತು ಮಾಂಸ.",co_label:"ಸಂಪರ್ಕಿಸಿ",co_title:"ಬಿ ಎಂ ಮನೋಜ ಸಂಪರ್ಕ",co_desc:"ಪ್ರಶ್ನೆ ಇದ್ದರೆ ಸಂಪರ್ಕಿಸಿ.",c1:"ವಿಳಾಸ",c2:"ಫೋನ್ / ವಾಟ್ಸಾಪ್",c3:"ಇಮೇಲ್",c4:"ಫಾರ್ಮ್ ಭೇಟಿ",fm1:"ಹೆಸರು",fm2:"ಫೋನ್",fm3:"ಇಮೇಲ್",fm4:"ಆಸಕ್ತಿ",fm5:"ಸಂದೇಶ",op1:"ಸಂತಾನ ಸ್ಟಾಕ್",op2:"ಮಾಂಸ ಕುರಿ",op3:"ಡೇರಿ ಕುರಿ",op4:"ಉಣ್ಣೆ ಕುರಿ",op5:"ಕುರಿ ಮರಿ",op6:"ಸಾಮಾನ್ಯ",enq:"ವಿಚಾರಿಸಿ",buy:"ಖರೀದಿಸಿ",sold_lbl:"ಮಾರಾಟ",avail_lbl:"ಲಭ್ಯ",rem:"ತೆಗೆ"},
+  hi:{nav_about:"हमारे बारे में",nav_shop:"दुकान",nav_breeds:"नस्लें",nav_contact:"संपर्क",btn_login:"लॉगिन",btn_acc:"मेरा खाता",hero_badge:"🌿 कर्नाटक · प्राकृतिक चरागाह",hero_h1a:"स्वागत है",hero_desc:"B M Manoja द्वारा कडकोल्ला, कर्नाटक में पाली गई गुणवत्तापूर्ण भेड़ें।",hero_btn1:"भेड़ें खरीदें",hero_btn2:"संपर्क करें",stat1:"फार्म पर भेड़ें",stat2:"साल का अनुभव",stat3:"नस्लें उपलब्ध",ab_label:"हमारी कहानी",ab_title:"B M Manoja का पारिवारिक भेड़ फार्म",ab_desc:"कडकोल्ला गांव, कुडलिगी, कर्नाटक में स्थित।",f1:"प्राकृतिक चारा",f1s:"कोई हार्मोन नहीं",f2:"स्वास्थ्य प्रमाणित",f2s:"टीकाकरण किया",f3:"सुरक्षित डिलीवरी",f3s:"परिवहन व्यवस्था",f4:"विशेषज्ञ सलाह",f4s:"नए खरीदारों को सहायता",sh_label:"बिक्री के लिए",sh_title:"हमारी भेड़ सूची",sh_desc:"लॉगिन करें और खरीदें।",br_label:"हमारी विशेषता",br_title:"हमारी नस्लें",br_desc:"ऊन, मांस, डेयरी के लिए नस्लें।",b1:"दुनिया का बेहतरीन ऊन।",b2:"तेजी से बढ़ने वाली नस्ल।",b3:"स्थानीय कर्नाटक नस्ल।",b4:"प्रसिद्ध मांस नस्ल।",b5:"उत्कृष्ट विकास दर।",b6:"ऊन और मांस दोनों।",co_label:"संपर्क करें",co_title:"B M Manoja संपर्क",co_desc:"कोई सवाल या खरीदना है?",c1:"पता",c2:"फोन / WhatsApp",c3:"ईमेल",c4:"फार्म दौरे",fm1:"आपका नाम",fm2:"फोन",fm3:"ईमेल",fm4:"रुचि",fm5:"संदेश",op1:"ब्रीडिंग स्टॉक",op2:"मांस भेड़",op3:"डेयरी भेड़",op4:"ऊन भेड़",op5:"मेमने",op6:"सामान्य",enq:"पूछताछ",buy:"अभी खरीदें",sold_lbl:"बिक गया",avail_lbl:"उपलब्ध",rem:"हटाएं"},
+  ta:{nav_about:"எங்களைப் பற்றி",nav_shop:"கடை",nav_breeds:"இனங்கள்",nav_contact:"தொடர்பு",btn_login:"உள்நுழைக",btn_acc:"என் கணக்கு",hero_badge:"🌿 கர்நாடகா · இயற்கை மேய்ச்சல்",hero_h1a:"வரவேற்கிறோம்",hero_desc:"B M Manoja அவர்களால் கவனமாக வளர்க்கப்படும் ஆடுகள்.",hero_btn1:"ஆடுகளை வாங்க",hero_btn2:"தொடர்பு",stat1:"பண்ணையில் ஆடுகள்",stat2:"ஆண்டு அனுபவம்",stat3:"இனங்கள்",ab_label:"எங்கள் கதை",ab_title:"B M Manoja குடும்ப பண்ணை",ab_desc:"கடகொல்லா கிராமம், குட்லிகி, கர்நாடகா.",f1:"இயற்கை தீவனம்",f1s:"ஹார்மோன் இல்லை",f2:"சுகாதார சான்று",f2s:"தடுப்பூசி போடப்பட்டது",f3:"பாதுகாப்பான விநியோகம்",f3s:"போக்குவரத்து ஏற்பாடு",f4:"நிபுணர் ஆலோசனை",f4s:"புதிய வாங்குபவர் உதவி",sh_label:"விற்பனைக்கு ஆடுகள்",sh_title:"எங்கள் பட்டியல்",sh_desc:"உள்நுழைந்து வாங்குங்கள்.",br_label:"சிறப்பு",br_title:"நாங்கள் வளர்க்கும் இனங்கள்",br_desc:"கம்பளி, இறைச்சி, பால் இனங்கள்.",b1:"உலகின் சிறந்த கம்பளி.",b2:"வேகமாக வளரும் இனம்.",b3:"கர்நாடக உள்ளூர் இனம்.",b4:"பிரபல கர்நாடக இனம்.",b5:"சிறந்த வளர்ச்சி.",b6:"கம்பளி மற்றும் இறைச்சி.",co_label:"தொடர்பு",co_title:"B M Manoja தொடர்பு",co_desc:"கேள்வி உள்ளதா?",c1:"முகவரி",c2:"தொலைபேசி",c3:"மின்னஞ்சல்",c4:"பண்ணை வருகை",fm1:"பெயர்",fm2:"தொலைபேசி",fm3:"மின்னஞ்சல்",fm4:"ஆர்வம்",fm5:"செய்தி",op1:"இனப்பெருக்கம்",op2:"இறைச்சி ஆடு",op3:"பால் ஆடு",op4:"கம்பளி ஆடு",op5:"குட்டி",op6:"பொது",enq:"விசாரிக்கவும்",buy:"வாங்குக",sold_lbl:"விற்கப்பட்டது",avail_lbl:"கிடைக்கும்",rem:"அகற்று"},
+  ml:{nav_about:"ഞങ്ങളെക്കുറിച്ച്",nav_shop:"കട",nav_breeds:"ഇനങ്ങൾ",nav_contact:"ബന്ധം",btn_login:"ലോഗിൻ",btn_acc:"എന്റെ അക്കൗണ്ട്",hero_badge:"🌿 കർണാടക · പ്രകൃതി മേച്ചിൽ",hero_h1a:"സ്വാഗതം",hero_desc:"B M Manoja ശ്രദ്ധയോടെ വളർത്തുന്ന ആടുകൾ.",hero_btn1:"ആടുകൾ വാങ്ങുക",hero_btn2:"ബന്ധപ്പെടുക",stat1:"ഫാമിലെ ആടുകൾ",stat2:"വർഷത്തെ അനുഭവം",stat3:"ഇനങ്ങൾ",ab_label:"ഞങ്ങളുടെ കഥ",ab_title:"B M Manoja കുടുംബ ഫാം",ab_desc:"കടകൊള്ള ഗ്രാമം, കുഡ്‌ലിഗി, കർണാടക.",f1:"പ്രകൃതി തീറ്റ",f1s:"ഹോർമോൺ ഇല്ല",f2:"ആരോഗ്യ സർട്ടിഫൈഡ്",f2s:"വാക്സിൻ നൽകിയത്",f3:"സുരക്ഷിത ഡെലിവറി",f3s:"ഗതാഗതം",f4:"വിദഗ്ദ്ധ ഉപദേശം",f4s:"വാങ്ങുന്നവർക്ക് സഹായം",sh_label:"വിൽക്കാൻ ആടുകൾ",sh_title:"ആട് ലിസ്റ്റ്",sh_desc:"ലോഗിൻ ചെയ്ത് വാങ്ങുക.",br_label:"പ്രത്യേകത",br_title:"ഞങ്ങൾ വളർത്തുന്ന ഇനങ്ങൾ",br_desc:"കമ്പിളി, മാംസം, ക്ഷീര ഇനങ്ങൾ.",b1:"ലോകത്തിലെ നല്ല കമ്പിളി.",b2:"വേഗത്തിൽ വളരുന്ന ഇനം.",b3:"കർണാടക നാടൻ ഇനം.",b4:"പ്രസിദ്ധ കർണാടക ഇനം.",b5:"മികച്ച വളർച്ചാ നിരക്ക്.",b6:"കമ്പിളിക്കും മാംസത്തിനും.",co_label:"ബന്ധപ്പെടുക",co_title:"B M Manoja ബന്ധം",co_desc:"ചോദ്യങ്ങൾ ഉണ്ടോ?",c1:"വിലാസം",c2:"ഫോൺ / WhatsApp",c3:"ഇമെയിൽ",c4:"ഫാം സന്ദർശനം",fm1:"പേര്",fm2:"ഫോൺ",fm3:"ഇമെയിൽ",fm4:"താൽപ്പര്യം",fm5:"സന്ദേശം",op1:"ബ്രീഡിംഗ്",op2:"മാംസ ആട്",op3:"ക്ഷീര ആട്",op4:"കമ്പിളി ആട്",op5:"കുഞ്ഞാട്",op6:"പൊതു",enq:"അന്വേഷിക്കുക",buy:"ഇപ്പോൾ വാങ്ങുക",sold_lbl:"വിറ്റു",avail_lbl:"ലഭ്യം",rem:"നീക്കം"},
+  mr:{nav_about:"आमच्याबद्दल",nav_shop:"दुकान",nav_breeds:"जाती",nav_contact:"संपर्क",btn_login:"लॉगिन",btn_acc:"माझे खाते",hero_badge:"🌿 कर्नाटक · नैसर्गिक कुरण",hero_h1a:"आपले स्वागत आहे",hero_desc:"B M Manoja यांनी कडकोळ्ळा, कर्नाटक येथे वाढवलेल्या दर्जेदार मेंढ्या.",hero_btn1:"मेंढ्या खरेदी करा",hero_btn2:"संपर्क करा",stat1:"शेतावरील मेंढ्या",stat2:"वर्षांचा अनुभव",stat3:"जाती उपलब्ध",ab_label:"आमची कहाणी",ab_title:"B M Manoja कुटुंब मेंढी शेत",ab_desc:"कडकोळ्ळा गाव, कुडलिगी, कर्नाटक.",f1:"नैसर्गिक खाद्य",f1s:"हार्मोन नाही",f2:"आरोग्य प्रमाणित",f2s:"लसीकरण",f3:"सुरक्षित वितरण",f3s:"वाहतूक व्यवस्था",f4:"तज्ज्ञ सल्ला",f4s:"खरेदीदारांना मदत",sh_label:"विक्रीसाठी",sh_title:"मेंढ्यांची यादी",sh_desc:"लॉगिन करा आणि खरेदी करा.",br_label:"विशेषता",br_title:"आम्ही वाढवतो त्या जाती",br_desc:"लोकर, मांस, दुग्धव्यवसाय जाती.",b1:"जगातील लोकर.",b2:"वेगाने वाढणारी जाती.",b3:"स्थानिक कर्नाटक जाती.",b4:"प्रसिद्ध मांस जाती.",b5:"उत्कृष्ट वाढीचा दर.",b6:"लोकर आणि मांस.",co_label:"संपर्क करा",co_title:"B M Manoja संपर्क",co_desc:"प्रश्न किंवा खरेदी?",c1:"पत्ता",c2:"फोन / WhatsApp",c3:"ईमेल",c4:"शेत भेट",fm1:"तुमचे नाव",fm2:"फोन",fm3:"ईमेल",fm4:"स्वारस्य",fm5:"संदेश",op1:"प्रजनन साठा",op2:"मांस मेंढी",op3:"दुग्ध मेंढी",op4:"लोकर मेंढी",op5:"कोकरे",op6:"सामान्य",enq:"चौकशी करा",buy:"आता खरेदी करा",sold_lbl:"विकले",avail_lbl:"उपलब्ध",rem:"काढा"}
+};
+
+let lang='en';
+function t(k){return T[lang][k]||T.en[k]||k;}
+function setLang(l){lang=l;document.querySelectorAll('[data-key]').forEach(el=>{const k=el.getAttribute('data-key');if(T[l][k])el.textContent=T[l][k];});renderCards();updateAuthUI();}
+
+// AUTH
+let user=null;
+let users=[];
+try{users=JSON.parse(localStorage.getItem('mnau_u')||'[]');}catch(e){}
+const ADMIN={name:'B M Manoja',email:'manu7019bm@gmail.com',password:'Manoja@2026',isAdmin:true,phone:'7019565474',enquiries:[]};
+
+function updateAuthUI(){
+  const a=document.getElementById('authArea');
+  const ab=document.getElementById('adminBar');
+  const heroBtn=document.getElementById('heroUploadBtn');
+  if(user){
+    a.innerHTML=`<span class="user-greet">👤 ${user.name.split(' ')[0]}</span><button class="btn-nav gold" style="margin-left:.4rem;" onclick="openAccModal()">${t('btn_acc')}</button>`;
+    if(user.isAdmin){
+      ab.style.display='flex';
+      if(heroBtn) heroBtn.style.display='block';
+    } else {
+      ab.style.display='none';
+      if(heroBtn) heroBtn.style.display='none';
+    }
+  } else {
+    a.innerHTML=`<button class="btn-nav gold" onclick="openM('authModal')">${t('btn_login')}</button>`;
+    ab.style.display='none';
+    if(heroBtn) heroBtn.style.display='none';
+  }
+  renderGallery();
+}
+
+function switchTab(tab){
+  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
+  document.getElementById('regForm').style.display=tab==='reg'?'block':'none';
+  document.getElementById('tab-login').className='mtab'+(tab==='login'?' active':'');
+  document.getElementById('tab-reg').className='mtab'+(tab==='reg'?' active':'');
+}
+
+function doAdminLogin(){user=ADMIN;closeM('authModal');updateAuthUI();renderCards();toast('🔐 Admin login! Welcome B M Manoja');}
+
+function doLogin(){
+  const e=document.getElementById('lEmail').value.trim();
+  const p=document.getElementById('lPass').value;
+  if(!e||!p){toast('⚠️ Enter email and password');return;}
+  if(e===ADMIN.email&&p===ADMIN.password){doAdminLogin();return;}
+  const u=users.find(x=>x.email===e&&x.password===p);
+  if(u){user=u;closeM('authModal');updateAuthUI();renderCards();toast('✅ Welcome, '+u.name+'!');}
+  else toast('❌ Invalid email or password');
+}
+
+function doRegister(){
+  const n=document.getElementById('rName').value.trim();
+  const e=document.getElementById('rEmail').value.trim();
+  const ph=document.getElementById('rPhone').value.trim();
+  const p=document.getElementById('rPass').value;
+  const p2=document.getElementById('rPass2').value;
+  if(!n||!e||!ph||!p){toast('⚠️ Fill all fields');return;}
+  if(p!==p2){toast('❌ Passwords do not match');return;}
+  if(users.find(x=>x.email===e)){toast('❌ Email already registered');return;}
+  const nu={name:n,email:e,phone:ph,password:p,isAdmin:false,enquiries:[]};
+  users.push(nu);
+  try{localStorage.setItem('mnau_u',JSON.stringify(users));}catch(err){}
+  user=nu;closeM('authModal');updateAuthUI();renderCards();toast('🎉 Account created! Welcome '+n+'!');
+}
+
+function doLogout(){user=null;closeM('accModal');updateAuthUI();renderCards();toast('👋 Logged out');}
+
+function openAccModal(){
+  if(!user){openM('authModal');return;}
+  document.getElementById('profInfo').innerHTML=`<strong>${user.name}</strong><br>${user.email}<br>📞 ${user.phone||''}`;
+  const ord=document.getElementById('myOrders');
+  if(user.enquiries&&user.enquiries.length){
+    ord.innerHTML=user.enquiries.map(e=>`<div class="ord-item"><span>🐑 ${e.name}</span><span style="color:var(--br);font-weight:700;">₹${e.price}</span></div>`).join('');
+  } else ord.innerHTML='<p style="font-size:.85rem;color:#aaa;">No enquiries yet.</p>';
+  openM('accModal');
+}
+
+// SHEEP
+let sheepData=[
+  {id:1,name:"Merino Breeding Ewe",age:"2 Years",gender:"Female",breed:"Merino",status:"available",price:"15,000",desc:"Excellent wool producer, gentle temperament. Vaccinated & vet-checked.",img:null},
+  {id:2,name:"Dorper Ram",age:"3 Years",gender:"Male",breed:"Dorper",status:"available",price:"20,000",desc:"Strong build, proven breeder. Ideal for meat production.",img:null},
+  {id:3,name:"Deccani Lamb Pair",age:"4 Months",gender:"Mixed",breed:"Deccani",status:"available",price:"10,000",desc:"Two healthy native lambs sold as a pair. Great for starting a flock.",img:null},
+  {id:4,name:"Bannur Meat Sheep",age:"1.5 Years",gender:"Female",breed:"Bannur",status:"available",price:"18,000",desc:"Famous Karnataka breed with tender meat. Healthy and farm-ready.",img:null},
+  {id:5,name:"Suffolk Stud Ram",age:"4 Years",gender:"Male",breed:"Suffolk",status:"available",price:"25,000",desc:"Award bloodlines, excellent conformation and quality.",img:null},
+  {id:6,name:"Mixed Flock (×5)",age:"1–3 Yrs",gender:"Mixed",breed:"Various",status:"available",price:"60,000",desc:"5 healthy mixed breed sheep. Great value for expanding a farm.",img:null},
+  {id:7,name:"Goat (Female)",age:"1 Year",gender:"Female",breed:"Local Goat",status:"available",price:"8,000",desc:"Healthy local breed goat. Good for dairy and meat. Vaccinated.",img:null},
+  {id:8,name:"Baby Goat (Kid)",age:"2 Months",gender:"Mixed",breed:"Local Goat",status:"available",price:"4,000",desc:"Cute healthy baby goat. Ready for new home. Farm raised.",img:null},
+];
+let nid=9;
+
+function renderCards(){
+  const g=document.getElementById('sheepGrid');
+  g.innerHTML='';
+  const isAdmin=user&&user.isAdmin;
+  sheepData.forEach(s=>{
+    const card=document.createElement('div');
+    card.className='sheep-card';
+    card.id='card-'+s.id;
+    const imgC=s.img?`<img src="${s.img}" alt="${s.name}">`:`<div class="simg-ph"><span>🐑</span><p>Click to upload</p></div>`;
+    card.innerHTML=`
+      <div class="simg" onclick="${isAdmin?'trigUp('+s.id+')':''}">
+        ${imgC}
+        ${isAdmin?'<div class="upl-ov"><span>📷</span>Upload Photo</div>':''}
+        <span class="stag ${s.status}">${s.status==='available'?'✓ Available':'✗ Sold'}</span>
+        <input type="file" accept="image/*" class="hid" id="fi-${s.id}" onchange="imgUp(event,${s.id})">
+      </div>
+      <div class="sinfo">
+        <input class="sname" value="${s.name}" ${isAdmin?'':'readonly'} onchange="upF(${s.id},'name',this.value)">
+        <div style="display:flex;gap:.6rem;margin:.4rem 0;flex-wrap:wrap;">
+          <span style="font-size:.75rem;color:#7a8a7a;">🎂 ${s.age}</span>
+          <span style="font-size:.75rem;color:#7a8a7a;">⚤ ${s.gender}</span>
+          <span style="font-size:.75rem;color:#7a8a7a;">🏷️ ${s.breed}</span>
+        </div>
+        <textarea class="sdesc" ${isAdmin?'':'readonly'} onchange="upF(${s.id},'desc',this.value)">${s.desc}</textarea>
+        <div class="sprice-row">
+          <div class="price-wrap">
+            <span class="psym">₹</span>
+            <input class="pinput" value="${s.price}" ${isAdmin?'':'readonly'} onchange="upF(${s.id},'price',this.value)">
+          </div>
+          <div class="cbtns">
+            ${isAdmin?`<button class="btn-c" style="background:${s.status==='available'?'#8c3a3a':'#3a8c3a'};font-size:.65rem;" onclick="togStatus(${s.id})">${s.status==='available'?t('sold_lbl'):t('avail_lbl')}</button>`:''}
+            <button class="btn-c" onclick="doEnq('${s.name}','${s.price}')">${t('enq')}</button>
+            <button class="btn-c buy" onclick="openPay('${s.name}','${s.price}')">${t('buy')}</button>
+          </div>
+        </div>
+        ${isAdmin?`<div style="text-align:right;margin-top:.5rem;"><button onclick="delCard(${s.id})" style="background:none;border:none;color:#ccc;font-size:.7rem;cursor:pointer;">🗑 ${t('rem')}</button></div>`:''}
+      </div>`;
+    g.appendChild(card);
+  });
+  const add=document.createElement('div');
+  add.className='add-card';
+  add.innerHTML='<span>＋</span><p>Add New Sheep</p>';
+  add.onclick=addCard;
+  if(user&&user.isAdmin) g.appendChild(add);
+}
+
+function trigUp(id){document.getElementById('fi-'+id).click();}
+function imgUp(ev,id){
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{sheepData.find(s=>s.id===id).img=e.target.result;renderCards();toast('📷 Photo uploaded!');};
+  r.readAsDataURL(f);
+}
+function upF(id,field,val){const s=sheepData.find(s=>s.id===id);if(s)s[field]=val;}
+function togStatus(id){const s=sheepData.find(s=>s.id===id);if(s){s.status=s.status==='available'?'sold':'available';renderCards();toast(s.status==='available'?'✅ Marked Available':'❌ Marked Sold');}}
+function delCard(id){if(confirm('Remove this listing?')){sheepData=sheepData.filter(s=>s.id!==id);renderCards();toast('🗑 Removed');}}
+function addCard(){
+  const n={id:nid++,name:"New Sheep",age:"Age",gender:"Gender",breed:"Breed",status:"available",price:"0",desc:"Click to edit description.",img:null};
+  sheepData.push(n);renderCards();toast('✅ New listing added!');
+  setTimeout(()=>document.getElementById('card-'+n.id).scrollIntoView({behavior:'smooth',block:'center'}),100);
+}
+
+// PAYMENT
+function openPay(name,price){
+  if(!user){toast('⚠️ Please login first');openM('authModal');return;}
+  document.getElementById('payName').textContent=name;
+  document.getElementById('payAmt').textContent='₹'+price;
+  openM('payModal');
+}
+function confirmPay(){
+  if(user&&!user.isAdmin){
+    if(!user.enquiries)user.enquiries=[];
+    user.enquiries.push({name:document.getElementById('payName').textContent,price:document.getElementById('payAmt').textContent.replace('₹',''),date:new Date().toLocaleDateString()});
+    const i=users.findIndex(u=>u.email===user.email);
+    if(i>=0){users[i]=user;try{localStorage.setItem('mnau_u',JSON.stringify(users));}catch(e){}}
+  }
+  closeM('payModal');toast('✅ Confirmed! Send screenshot on WhatsApp: +91 7019565474');
+}
+
+function doEnq(name,price){
+  if(!user){toast('⚠️ Please login to enquire');openM('authModal');return;}
+  if(user&&!user.isAdmin){
+    if(!user.enquiries)user.enquiries=[];
+    user.enquiries.push({name,price,date:new Date().toLocaleDateString()});
+    const i=users.findIndex(u=>u.email===user.email);
+    if(i>=0){users[i]=user;try{localStorage.setItem('mnau_u',JSON.stringify(users));}catch(e){}}
+  }
+  toast('📩 Enquiry sent for '+name+'! We will call you soon.');
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
+
+// MODALS
+function openM(id){document.getElementById(id).classList.add('active');}
+function closeM(id){document.getElementById(id).classList.remove('active');}
+document.querySelectorAll('.moverlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('active');}));
+
+// TOAST
+function toast(msg){const el=document.getElementById('toastEl');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3500);}
+
+// GALLERY
+let galleryPhotos = [];
+function renderGallery(){
+  const g = document.getElementById('galleryGrid');
+  const isAdmin = user && user.isAdmin;
+  if(galleryPhotos.length === 0){
+    g.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--gl);">
+      <div style="font-size:4rem;margin-bottom:1rem;">🐑🐐</div>
+      <p style="font-size:1rem;font-weight:700;">${isAdmin ? 'Click "Add Photo" below to upload your sheep & goat photos!' : 'Photos coming soon — check back later!'}</p>
+    </div>`;
+  } else {
+    g.innerHTML = galleryPhotos.map((src,i)=>`
+      <div style="position:relative;">
+        <img class="gallery-img" src="${src}" alt="Farm photo ${i+1}">
+        ${isAdmin ? `<button onclick="removeGalleryPhoto(${i})" style="position:absolute;top:.4rem;right:.4rem;background:rgba(192,57,43,.9);color:#fff;border:none;border-radius:50%;width:26px;height:26px;font-size:.8rem;cursor:pointer;font-weight:700;">✕</button>` : ''}
+      </div>`).join('');
+  }
+  document.getElementById('galleryAdminBtn').style.display = isAdmin ? 'block' : 'none';
+}
+
+function addGalleryPhotos(event){
+  const files = Array.from(event.target.files);
+  let loaded = 0;
+  files.forEach(file => {
+    const r = new FileReader();
+    r.onload = e => {
+      galleryPhotos.push(e.target.result);
+      loaded++;
+      if(loaded === files.length){ renderGallery(); toast(`📷 ${files.length} photo(s) added to gallery!`); }
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+function removeGalleryPhoto(idx){
+  galleryPhotos.splice(idx,1);
+  renderGallery();
+  toast('🗑 Photo removed from gallery');
+}
+
+// HERO PHOTO UPLOAD
+let heroPhotos = [];
+let heroIdx = 0;
+let heroTimer = null;
+
+function uploadHeroPhotos(event){
+  const files = Array.from(event.target.files);
+  let loaded = 0;
+  heroPhotos = [];
+  files.forEach(file => {
+    const r = new FileReader();
+    r.onload = e => {
+      heroPhotos.push(e.target.result);
+      loaded++;
+      if(loaded === files.length){ startHeroSlideshow(); toast(`📷 ${files.length} hero photo(s) uploaded!`); }
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+function startHeroSlideshow(){
+  const wrap = document.getElementById('heroSlides');
+  if(heroTimer) clearInterval(heroTimer);
+  heroIdx = 0;
+  wrap.innerHTML = heroPhotos.map((src,i)=>
+    `<div class="hero-slide${i===0?' active':''}" style="background-image:url('${src}');background-size:cover;background-position:center;"></div>`
+  ).join('');
+  if(heroPhotos.length > 1){
+    heroTimer = setInterval(()=>{
+      const slides = wrap.querySelectorAll('.hero-slide');
+      slides[heroIdx].classList.remove('active');
+      heroIdx = (heroIdx+1) % slides.length;
+      slides[heroIdx].classList.add('active');
+    }, 4000);
+  }
+}
+
+// ABOUT IMAGE UPLOAD
+function uploadAboutImg(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const r = new FileReader();
+  r.onload = e => {
+    const wrap = document.getElementById('aboutImgWrap');
+    wrap.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;display:block;">
+      <div style="position:absolute;bottom:.7rem;right:.7rem;">
+        <label style="background:rgba(45,74,45,.85);color:#fff;padding:.4rem .8rem;border-radius:4px;font-size:.72rem;font-weight:700;cursor:pointer;">
+          📷 Change Photo <input type="file" accept="image/*" style="display:none" onchange="uploadAboutImg(event)">
+        </label>
+      </div>`;
+    toast('📷 About photo uploaded!');
+  };
+  r.readAsDataURL(file);
+}
+
+// SLIDESHOW
+(function(){
+  const slides = document.querySelectorAll('.hero-slide');
+  let cur = 0;
+  if(slides.length > 1){
+    setInterval(()=>{
+      slides[cur].classList.remove('active');
+      cur = (cur+1) % slides.length;
+      slides[cur].classList.add('active');
+    }, 4000);
+  }
+})();
+
+// INIT
+renderCards();
+renderGallery();
+updateAuthUI();
+</script>
+</body>
+</html>
